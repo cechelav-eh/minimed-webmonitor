@@ -1,0 +1,5 @@
+curlify==2.2.1
+Requests==2.31.0
+selenium-wire==4.6.4
+flask==2.0.1
+psutil>=5.9.0

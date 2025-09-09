@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Login - Minimed Monitor</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #fff;
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        .header p {
+            color: #aaa;
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            height: 300px;
+            background-color: #2a2a2a;
+            border: 2px solid #444;
+            border-radius: 8px;
+            color: #fff;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007acc;
+            box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: #007acc;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #005fa3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #444;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+            color: #28a745;
+        }
+        
+        .alert-error {
+            background-color: rgba(220, 53, 69, 0.2);
+            border: 1px solid #dc3545;
+            color: #dc3545;
+        }
+        
+        .help-text {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .login-container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .form-group textarea {
+                height: 250px;
+                font-size: 12px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <h1>Configuración de Login</h1>
+            <p>Editar datos de autenticación para Carelink</p>
+        </div>
+        
+        {% if message %}
+            <div class="alert alert-{{ message_type }}">
+                {{ message }}
+            </div>
+        {% endif %}
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="logindata">Datos de Login (JSON):</label>
+                <textarea id="logindata" name="logindata" required>{{ logindata_content }}</textarea>
+                <div class="help-text">
+                    Edita el contenido JSON con los datos de autenticación de Carelink. 
+                    Asegúrate de mantener la estructura JSON válida con comillas dobles.
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="/" class="btn btn-secondary">Volver al Monitor</a>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Validación básica de JSON
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const textarea = document.getElementById('logindata');
+            const content = textarea.value.trim();
+            
+            try {
+                JSON.parse(content);
+            } catch (error) {
+                e.preventDefault();
+                alert('Error: El contenido no es un JSON válido.\n\n' + error.message);
+                textarea.focus();
+            }
+        });
+        
+        // Auto-resize del textarea
+        const textarea = document.getElementById('logindata');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.max(300, this.scrollHeight) + 'px';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+services:
+  minimed-web:
+    # Comentado el build local para usar la imagen del registry
+    build:
+      context: .
+      platforms:
+        - linux/amd64
+        - linux/arm/v7
+    container_name: minimed-web
+    ports:
+      - 5001:5001
+      - 8081:8081
+    command: bash -c "python minimed-mon-web.py"
+    volumes:
+      - ./data/logindata.json:/app/data/logindata.json
+    restart: unless-stopped
+    environment:
+      - TZ=Chile/Santiago
