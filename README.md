@@ -20,6 +20,8 @@ Un monitor web para bombas de insulina MiniMed que permite visualizar datos en t
 - Acceso a internet para conectar con CareLink
 - Credenciales válidas de Medtronic CareLink
 
+> **Recomendación**: Usa un entorno virtual de Python para evitar conflictos con otras dependencias del sistema.
+
 ## 🛠️ Instalación
 
 ### Instalación Local
@@ -31,13 +33,20 @@ git clone <repository-url>
 cd minimed-webmonitor
 ```
 
-2. **Instalar dependencias**:
+2. **Crear entorno virtual**:
+
+```bash
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+```
+
+3. **Instalar dependencias**:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Configurar credenciales (OBLIGATORIO)**:
+4. **Configurar credenciales (OBLIGATORIO)**:
 
 ```bash
 python carelink_carepartner_api_login.py
@@ -47,7 +56,7 @@ python carelink_carepartner_api_login.py
 - El script abrirá Firefox para autenticarte con CareLink
 - Las credenciales se guardarán automáticamente en `data/logindata.json`
 
-4. **Ejecutar la aplicación**:
+5. **Ejecutar la aplicación**:
 
 ```bash
 python minimed-mon-web.py
@@ -60,6 +69,9 @@ La aplicación estará disponible en `http://localhost:5001`
 0. **Configurar credenciales (OBLIGATORIO)**:
 
 ```bash
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+pip install -r requirements.txt
 python carelink_carepartner_api_login.py
 ```
 
